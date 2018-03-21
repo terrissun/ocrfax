@@ -1,5 +1,11 @@
 AutoFAX
-by MERS
+by MERS (Siying Sun, Rongrong miao, Matthew and Elaine Chao)
+
+This is a rogram which automatically scans incoming faxes for relevant information, then uploads it to the patient’s chart, filling in the appropriate information based on a scan of the text in the document. The program could also alert doctors of essential lab results that need to be looked at right away. By automating this process, this could prevent a lot of unnecessary organizational work. 
+
+
+
+
 
 Running the main program:
 $ python3 main.py
