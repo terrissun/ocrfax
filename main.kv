@@ -1,0 +1,463 @@
+<Controller>:
+    orientation: 'vertical'
+    TabbedPanel:
+        do_default_tab: False
+        TabbedPanelItem:
+            text:"Status"
+            id: status_tab
+        TabbedPanelItem:
+            text:"Templates"
+            id: templates_tab
+        TabbedPanelItem:
+            text:"Settings"
+            id: settings_tab
+
+<StatusTab>:
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            BoxLayout:
+                size_hint_x: 0.3
+                orientation: 'vertical'
+                Label:
+                    id: date_label
+                    text: "Date:"
+                Label:
+                    id: name_label
+                    text: "Name:"
+                Label:
+                    id: phone_number_label
+                    text: "Phone Number:"
+                Label:
+                    id: message_type_label
+                    text: "Message Type"
+                Label:
+                    id: message_label
+                    text: "Message"
+            BoxLayout:
+                size_hint_x: 0.7
+                orientation: 'vertical'
+                TextInput:
+                    id: date_text_input
+                TextInput:
+                    id: name_text_input
+                TextInput:
+                    id: phone_number_text_input
+                TextInput:
+                    id: message_type_text_input
+                TextInput:
+                    id: message_text_input
+        BoxLayout:
+            Button:
+                id: add_notification_but
+                text: "Add Notification (Debug)"
+                on_release: root.add_notification_debug()
+            Button:
+                id: delete_notification_but
+                text: "Clear Notifications"
+                on_release: root.clear_notifications()
+        BoxLayout:
+            size_hint_y: 0.3
+            TextInput:
+                id: search_input
+                on_text: root.search_notifications()
+            Button:
+                id: search_button
+                text: "search"
+                on_release: root.search_notifications()
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                size_hint_y: 0.1
+                Label:
+                    text: "[b]Date:[/b]"
+                    markup: True
+                Label:
+                    text: "[b]Name:[/b]"
+                    markup: True
+                Label:
+                    text: "[b]Phone Number:[/b]"
+                    markup: True
+                Label:
+                    text: "[b]Message Type:[/b]"
+                    markup: True
+                Label:
+                    text: "[b]Message:[/b]"
+                    markup: True
+            BoxLayout:
+                size_hint_y: 0.9
+                id: notifications_display_box_layout
+
+<TemplatesTab>
+    BoxLayout:
+        id: templates_tab
+
+<SettingsTab>
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: 0.05
+            Label:
+                text: "Settings"
+        BoxLayout:
+            size_hint_y: 0.15
+            orientation: 'vertical'
+            BoxLayout:
+                Label:
+                    text: 'Default Template Location:'
+                TextInput:
+                    text: ''
+                    id: dtl_text_input
+            BoxLayout:
+                Label:
+                    text: 'Default PDF Location:'
+                TextInput:
+                    text: ''
+                    id: dfl_text_input
+            Button:
+                text: "Update Settings"
+                on_release: root.update_settings()
+        BoxLayout:
+            size_hint_y: 0.1
+            orientation: 'vertical'
+            BoxLayout:
+                Label:
+                    text: "Backup PDFs added to watch folder"
+                CheckBox:
+                    id: backup_pdfs_checkbox
+                    active: True
+        BoxLayout:
+            size_hint_y: 0.7
+
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<NotificationsPanel>:
+    id: notifications_display_panel
+    viewclass: 'SelectableLabel'
+    SelectableRecycleGridLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: False
+        touch_multiselect: False
+        cols: 5
+
+<PositionDependentKeywordPanel>:
+    id: position_dependent_keyword_panel
+    viewclass: 'SelectableLabel'
+    SelectableRecycleGridLayout:
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: False
+        touch_multiselect: False
+        cols: 1
+
+<TemplateCreationPage>:
+    BoxLayout:
+        ScrollView:
+            BoxLayout:
+                size_hint_y: None
+                height: 1500
+                orientation: 'vertical'
+                Label:
+                    size_hint_y: None
+                    height: 50
+                    id: template_title
+                    text: ""
+                # Label:
+                #     size_hint_y: None
+                #     height: 50
+                #     text: "Position-Independent Keywords"
+                # BoxLayout:
+                #     orientation: 'vertical'
+                #     size_hint_y: None
+                #     height: 75
+                #     BoxLayout:
+                #         Label:
+                #             text: 'Word:'
+                #         Label:
+                #             text: 'Page:'
+                #         Label:
+                #             text: 'Count:'
+                #         Label:
+                #             text: ''
+                #     BoxLayout:
+                #         TextInput:
+                #             id: position_independent_word
+                #         TextInput:
+                #             id: position_independent_page
+                #         TextInput:
+                #             id: position_independent_count
+                #         Button:
+                #             text: 'Add'
+                #             id: position_independent_add_button
+                #             on_release: root.add_position_independent_keyword()
+                # BoxLayout:
+                #     size_hint_y: None
+                #     height: 300
+                #     id: position_independent_scroll
+                Label:
+                    size_hint_y: None
+                    height: 50
+                    text: "Position-Dependent Keywords"
+                BoxLayout:
+                    size_hint_y: None
+                    height: 50
+                    orientation: "horizontal"
+                    BoxLayout:
+                    BoxLayout:
+                        Button:
+                            text: 'Add'
+                            id: position_dependent_add_button
+                            on_release: root.add_position_dependent_keyword()
+                BoxLayout:
+                    id: position_dependent_panel
+                    size_hint_y: None
+                    height: 300
+                BoxLayout:
+                    Button:
+                        id: mark_keywords_for_identification_button
+                        text: "Mark Keywords for Identification"
+                        disabled: True
+                    Button:
+                        text: "Clear"
+                        on_release:root.clear_canvas()
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        id: test_paint_app
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                id: templates_box
+                size_hint_y: 0.85
+                Button:
+                    text: "Click to select a PDF to base the template off of."
+                    id: pdf_selection_button
+                    on_release: root.launch_file_chooser()
+            BoxLayout:
+                id: templates_text_input
+                size_hint_y: 0.05
+                orientation: 'vertical'
+                BoxLayout:
+                    Button:
+                        id: templates_close_button
+                        text: "Close"
+                        on_release: root.close_template_creation_panel()
+                    Button:
+                        id: templates_save_button
+                        text: "Save"
+                        on_release: root.save_template()
+
+<TemplatesStartPage>
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            id: new_template_button
+            text: "Create New Template"
+            on_release: root.new_template_popup()
+        Button:
+            id: load_template_button
+            text: "Load Template"
+            on_release: root.load_template_popup()
+
+
+<PDFDisplay>
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            id: pdf_canvas_area
+            size_hint_y: 0.9
+        BoxLayout:
+            size_hint_y: 0.05
+            Button:
+                id: prev_page_button
+                text: 'Previous page'
+                on_release: root.prev_page()
+            Button:
+                id: next_page_button
+                text: 'Next page'
+                on_release: root.next_page()
+        BoxLayout:
+            size_hint_y: 0.05
+            Button:
+                id: templates_clear_button
+                text: 'Clear Page'
+                on_release: root.clear_page()
+
+<NewTemplatesPopup>
+    size_hint: (None, None)
+    size: (400, 200)
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        AnchorLayout:
+            size_hint: (1, 0.1)
+            anchor_x: 'right'
+            anchor_y: 'top'
+            Button:
+                id: new_templates_close_button
+                size_hint: (None, None)
+                size: (20, 20)
+                text: "X"
+                on_release: root.dismiss()
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: (1, 0.5)            
+            Label:
+                size_hint_y: 0.6
+                text: "Enter the name of the template you wish to create:"
+            Label:
+                text: ""
+                size_hint_y: 0.4
+                id: new_templates_error_text
+        AnchorLayout:
+            TextInput:
+                id: new_templates_input_name_box
+                size_hint: (0.8, 0.5)
+                multiline: False
+                on_text_validate: root.prepare_new_template_panel()
+        BoxLayout:
+            size_hint_y: 0.8
+            BoxLayout:
+                size_hint_x: 0.6
+            BoxLayout:
+                size_hint_x: 0.4
+                Button:
+                    size_hint: (None, None)
+                    size: (70, 30)
+                    text: 'OK'
+                    on_release: root.prepare_new_template_panel()
+                Button:
+                    size_hint: (None, None)
+                    size: (70, 30)
+                    text: 'Cancel'
+                    on_release: root.dismiss()
+        BoxLayout:
+            size_hint_y: 0.2
+
+<PDFPopup>
+    # size_hint: (None, None)
+    # size: (400, 200)
+    # auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            id: popup_pdf_location
+            size_hint_y: 0.9
+        BoxLayout:
+            size_hint_y: 0.1
+            Button:
+                text: 'OK'
+                on_release: root.add_boxes()
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+
+<AlertPopup>
+    size_hint: (None, None)
+    size: (400, 200)
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: 0.9
+            Label:
+                id: message_box
+                text: ''
+        BoxLayout:
+            size_hint_y: 0.1
+            Button:
+                text: 'OK'
+                on_release: root.dismiss()
+
+<LoadFileChooserPopup>
+    # size_hint: (None, None)
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: 0.1
+            Button:
+                size_hint_x: 0.1
+                text: '<'
+                on_release: root.go_up()
+            Label: 
+                text: ""
+                text_size: self.size
+                id: load_dialog_title
+                halign: "left"
+        BoxLayout:
+            orientation: "vertical"
+            BoxLayout:
+                id: filechooser_box
+            BoxLayout:
+                size_hint_y: None
+                height: 30
+                Button:
+                    text: "Cancel"
+                    on_release: root.dismiss()
+
+                Button:
+                    text: "Load"
+                    on_release: root.load()
+
+<FileChooserClass>
+
+# <LoadDialog>:
+#     BoxLayout:
+#         size: root.size
+#         pos: root.pos
+#         orientation: "vertical"
+#         FileChooserIconView:
+#             id: filechooser
+
+#         BoxLayout:
+#             size_hint_y: None
+#             height: 30
+#             Button:
+#                 text: "Cancel"
+#                 on_release: root.cancel()
+
+#             Button:
+#                 text: "Load"
+#                 on_release: root.load(filechooser.path, filechooser.selection)
+
+<SaveDialog>:
+    text_input: text_input
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+
+        TextInput:
+            id: text_input
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Save"
+                on_release: root.save(filechooser.path, text_input.text)
